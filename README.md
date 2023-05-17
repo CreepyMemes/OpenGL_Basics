@@ -21,4 +21,7 @@ cmake -S . -B build/ -G "MinGW Makefiles"
 ### Finally to generate the executable file run this command:
     cmake --build build
 
-### Then just run the previously generated executable, which will be located in the build folder
+### Then run the previously generated executable with this command:
+```
+build\OpenGL-Basics
+```
