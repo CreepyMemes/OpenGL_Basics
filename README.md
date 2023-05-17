@@ -1,17 +1,12 @@
 # My CMake OpenGL C++ Notes (_cross-platform_)
 
 
-### First of all clone this repo with this command:
+### First of all clone this repo (and it's submodules automatically) with this command:
 ```
-git clone https://github.com/CreepyMemes/OpenGL_Basics.git
-```
-### Before building with CMake clone the the GLFW submodule with the following commands from the root:
-```
-git submodule init
-git submodule update
+git clone https://github.com/CreepyMemes/OpenGL_Basics --recursive
 ```
 
-### From the root directory to generate the cmake configuration run this command:
+### From the _root directory_, to generate the cmake configuration run this command:
 
 - #### If on Linux just run this command:
 ```
@@ -25,3 +20,5 @@ cmake -S . -B build/ -G "MinGW Makefiles"
 
 ### Finally to generate the executable file run this command:
     cmake --build build
+
+### Then just run the previously generated executable, which will be located in the build folder
