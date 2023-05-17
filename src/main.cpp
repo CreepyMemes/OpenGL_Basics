@@ -33,7 +33,7 @@ std::string fragmentShaders[2] = {
     "out vec4 FragColor;\n"
     "\n"
     "void main(){\n"
-    "   FragColor = vec4(1.1f, 0.5f, 0.0f, 1.0f);\n"
+    "   FragColor = vec4(1.0f, 0.5f, 0.0f, 1.0f);\n"
     "}\n",
 
     "#version 330 core\n"
