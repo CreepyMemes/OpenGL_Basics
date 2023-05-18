@@ -4,6 +4,10 @@
 #include <iostream>
 #include <cassert>
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
+
 // Check if there are errors, if one is found print it then kill the execution with assert
 bool glErrorCode();
 #define glCheckError() assert(glErrorCode())
@@ -19,12 +23,13 @@ std::string vertexShader =
     "#version 330 core\n"
     "\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "layout (location = 1) in vec3 aColor;\n"
     "\n"
-    "out vec4 vertexColor;\n"
+    "out vec3 ourColor;\n"
     "\n"
     "void main(){\n"
     "   gl_Position = vec4(aPos, 1.0);\n"
-    "   vertexColor = vec4(0.5, 0.0, 0.0, 1.0);\n"
+    "   ourColor = aColor;\n"
     "}\n";
 
 // Define the fragment shader source
@@ -33,19 +38,23 @@ std::string fragmentShaders[2] = {
     "\n"
     "out vec4 FragColor;\n"
     "\n"
-    "in vec4 vertexColor;\n"
+    "in vec3 ourColor;\n"
     "\n"
     "void main(){\n"
-    "   FragColor = vertexColor;\n"
+    "   FragColor = vec4(ourColor, 1.0);\n"
     "}\n",
 
     "#version 330 core\n"
     "\n"
     "out vec4 FragColor;\n"
     "\n"
+    "in vec3 ourColor;\n"
+    "\n"
+    "//uniform vec4 ourColor;\n"
+    "\n"
     "void main(){\n"
-    "   FragColor = vec4(0.0, 0.0, 1.0, 1.0);\n"
-    "}\n"
+    "   FragColor = vec4(ourColor, 1.0);\n"
+    "}\n",
 };
 
 int main(){
@@ -78,33 +87,35 @@ int main(){
     // Callback function on the window that gets called each time the window is resized
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
-    // Pass GLAD the function to load the address of the OpenGL function pointers which is OS-specific
+    // Initialize GLAD by passing the function to load the address of the OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
         std::cerr << "Failed to initialize GLAD" << std::endl;
         glfwTerminate();
         return -1;
     }    
 
-    // Create the shader program and set it as the current active shader program (with glUseProgram)
+    // Declare variable that will hold the shader programs's IDs
     unsigned int shaderPrograms[2];
 
+    // Compile and create Shader Program Objects
     for (int i = 0; i < 2; i++) {
         shaderPrograms[i] = CreateShader(vertexShader, fragmentShaders[i]);    
     }
 
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
-    float vertices[2][12] = {
+    float vertices[2][24] = {
         {
-             0.1f,  0.1f, 0.0f,
-             0.1f, -0.9f, 0.0f,
-            -0.9f, -0.9f, 0.0f,
-            -0.9f,  0.1f, 0.0f 
+            // Positions        // Colors
+             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f,
+             0.1f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f,
+            -0.9f, -0.9f, 0.0f, 0.0f, 1.0f, 0.0f,
+            -0.9f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f
         }, 
         {
-             0.9f,  0.9f, 0.0f,
-             0.9f, -0.1f, 0.0f,
-            -0.1f, -0.1f, 0.0f,
-            -0.1f,  0.9f, 0.0f 
+             0.9f,  0.9f, 0.0f, 1.0f, 0.0f, 0.0f,
+             0.9f, -0.1f, 0.0f, 0.0f, 1.0f, 0.0f,
+            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, 1.0f,
+            -0.1f,  0.9f, 0.0f, 0.0f, 1.0f, 1.0f
         }
     };
     
@@ -117,6 +128,7 @@ int main(){
     // Create the variables that will contain the VAO's and VBO's IDs
     unsigned int VAOs[2], VBOs[2], EBOs[2]; 
     
+    // Setup VAO, VBO, EBO
     for(int i = 0; i < 2; i++){
 
         // Core OpenGL requires a Vertex Array Object be defined and bound (to store the vertex attribute configurations of the VBOs while it's bound)
@@ -133,9 +145,13 @@ int main(){
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[i]);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[i]), vertices[i], GL_STATIC_DRAW); 
 
-            // Set the vertex attribute pointers (by their: index, size, type, normalize?, stride, pointer) then enable it
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
+            // Set the vertex attribute pointers (by their: location, size, type, normalize?, stride, pointer) then enable their "location" with  glEnableVertexAttribArray(location)
+                // Position Attribute
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+                glEnableVertexAttribArray(0);
+                // Color Attribute
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+                glEnableVertexAttribArray(1);
 
             // Bind the previously created EBO and set it as current GL_ELEMENT_ARRAY_BUFFER, then load the "indices" data to it (in the graphic's card memory)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs[i]);
@@ -144,6 +160,10 @@ int main(){
         // Unbind the VAO once all VBOs and attrribute configurations are defined (not necessary to do)
         glBindVertexArray(0); 
     }
+
+    // Constants to manipulate the sin values
+    const float multiplier = 4.0f;
+    const float divider = 3.0f;
 
     // Loop until the user closes the window
     while(!glfwWindowShouldClose(window)){
@@ -155,15 +175,29 @@ int main(){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-            // Draw rectangles!
-            for(int i = 0; i < 2; i++){
-                glUseProgram(shaderPrograms[i]);
-                glBindVertexArray(VAOs[i]);
+        // Get current time in seconds since GLFW window has been initialized
+        float timeValue  = glfwGetTime();
 
-                // Check if there are errors, then print the triangle
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-                glCheckError();
-            }
+        // Set the RGB values with sin wave based on "timeValue"
+        float redValue   = (sin(multiplier * timeValue + M_PI)     + 1.0f) / divider;
+        float greenValue = (sin(multiplier * timeValue)            + 1.0f) / divider;
+        float blueValue  = (sin(multiplier * timeValue + M_PI / 2) + 1.0f) / divider;
+
+        // Get the location of the target uniform
+        //int vertexColorLocation = glGetUniformLocation(shaderPrograms[1], "ourColor");
+
+        // Draw rectangles!
+        for(int i = 0; i < 2; i++){
+            glUseProgram(shaderPrograms[i]);
+            glBindVertexArray(VAOs[i]);
+
+            // Change the uniform value every loop (this uniform is used by the shaderProgram in index 1)
+            //if(i == 1) glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
+
+            // Check if there are errors, then print the triangle
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glCheckError();
+        }
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window);
