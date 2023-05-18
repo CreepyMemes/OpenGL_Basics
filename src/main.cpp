@@ -4,14 +4,12 @@
 #include <iostream>
 #include <cassert>
 
+// Check if there are errors and kill the execution with assert if any are found
+#define glCheckError() assert(glErrorCode() == GL_NO_ERROR)
+GLenum glErrorCode();
+
 static unsigned int CompileShader(unsigned int type, const std::string& source);
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
-
-#define glCall(x) glClearError(); x; assert(glLogCall())
-static void glClearError();
-static bool glLogCall();
-static std::string get_error_code(const GLenum errorCode);
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -160,7 +158,8 @@ int main(){
                 glBindVertexArray(VAOs[i]);
 
                 // Check if there are errors, then print the triangle
-                glCall( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glCheckError();
             }
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -179,31 +178,6 @@ int main(){
     // Terminate the GLFW window
     glfwTerminate();
     return 0;
-}
-
-static void glClearError(){
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static std::string get_error_code(const GLenum errorCode){
-    switch (errorCode){
-        case GL_INVALID_ENUM:                  return "INVALID_ENUM";
-        case GL_INVALID_VALUE:                 return "INVALID_VALUE";
-        case GL_INVALID_OPERATION:             return "INVALID_OPERATION";
-        //case GL_STACK_OVERFLOW:                return "STACK_OVERFLOW";
-        //case GL_STACK_UNDERFLOW:               return "STACK_UNDERFLOW";
-        case GL_OUT_OF_MEMORY:                 return "OUT_OF_MEMORY";
-        case GL_INVALID_FRAMEBUFFER_OPERATION: return "INVALID_FRAMEBUFFER_OPERATION";
-        default: return "UKNOWN_ERROR";
-    }
-}
-
-static bool glLogCall(){
-    while(GLenum error = glGetError()){
-        std::cerr << "[OpenGL Error] (" << get_error_code(error) << ") -> ";
-        return false;
-    }
-    return true;
 }
 
 // Create a Program object for by compiling and linking the Vertex Shader and Fragment Shader sources
@@ -281,4 +255,24 @@ void processInput(GLFWwindow *window){
     
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+}
+
+// Check if there are errors, and return error code
+GLenum glErrorCode() {
+    GLenum errorCode;
+
+    while ((errorCode = glGetError()) != GL_NO_ERROR){
+        std::string error;
+        switch (errorCode){
+            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+            //case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+            //case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+        }
+        std::cerr << "[OPENGL ERROR] (" << error << ") | ";
+    }
+    return errorCode;
 }
