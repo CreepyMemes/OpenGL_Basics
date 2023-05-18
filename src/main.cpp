@@ -4,9 +4,9 @@
 #include <iostream>
 #include <cassert>
 
-// Check if there are errors and kill the execution with assert if any are found
-#define glCheckError() assert(glErrorCode() == GL_NO_ERROR)
-GLenum glErrorCode();
+// Check if there are errors, if one is found print it then kill the execution with assert
+bool glErrorCode();
+#define glCheckError() assert(glErrorCode())
 
 static unsigned int CompileShader(unsigned int type, const std::string& source);
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
@@ -87,7 +87,6 @@ int main(){
         shaderPrograms[i] = CreateShader(vertexShader, fragmentShaders[i]);    
     }
 
-    
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[2][12] = {
         {
@@ -137,7 +136,6 @@ int main(){
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs[i]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
 
-            
         // Unbind the VAO once all VBOs and attrribute configurations are defined (not necessary to do)
         glBindVertexArray(0); 
     }
@@ -257,12 +255,11 @@ void processInput(GLFWwindow *window){
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 }
 
-// Check if there are errors, and return error code
-GLenum glErrorCode() {
-    GLenum errorCode;
+// Check if there are errors and return False if an error is found, so assert can kill the program
+bool glErrorCode() {
+    std::string error = "";
 
-    while ((errorCode = glGetError()) != GL_NO_ERROR){
-        std::string error;
+    while (GLenum errorCode = glGetError()){
         switch (errorCode){
             case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
             case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
@@ -272,7 +269,8 @@ GLenum glErrorCode() {
             //case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
             //case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
         }
-        std::cerr << "[OPENGL ERROR] (" << error << ") | ";
+        std::cerr << "[OPENGL ERROR: " << error << "]" << std::endl;
     }
-    return errorCode;
+
+    return error == "";
 }
