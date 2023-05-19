@@ -1,26 +1,40 @@
 
 #include "shader.h"
 
-// Create a Program object for by compiling and linking the Vertex Shader and Fragment Shader sources
-unsigned int Shader::createShader(const unsigned int vertex, const unsigned int fragment){
-    
-    // Creates a program object and returns it's ID
-    unsigned int program = glCreateProgram();
+// Constructor reads and builds the shader
+Shader::Shader(char **argv, std::string vertexFileName, std::string fragmentFileName){
 
-    // Attach the compiled Vertex Shader Object and Fragment Shader Object to the Program Object and link them
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
+    // Construct the complete shaders path
+    std::string vertexPath   = getShaderPath(argv, vertexFileName);
+    std::string fragmentPath = getShaderPath(argv, fragmentFileName);
 
-    // Validate the program
-    glValidateProgram(program);
+    // Read the source files from their paths in this class constructor arguments
+    readSource(vertexPath.c_str(), fragmentPath.c_str());
 
-    // Delete the Vertex Shader object and the Fragment shader object because they've been linked to the Program object
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
+    // Compile the Vertex Shader and Fragment Shader from their source retrieved by readSource()
+    unsigned int vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
+    unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
 
-    // Return the program's object ID
-    return program;
+    // Create the Program Object and save it's ID
+    id = createShader(vertex, fragment);
+}
+
+// Return the absolute path of the shaders, so the App can be run from anywhere
+std::string Shader::getShaderPath(char** argv, const std::string fileName) {
+
+    // Get the path of the executable
+    std::filesystem::path executablePath(argv[0]);
+
+    // Extract the directory path
+    std::filesystem::path directoryPath = executablePath.parent_path();
+
+    // Go up one directory level
+    std::filesystem::path parentPath = directoryPath.parent_path();
+
+    // Construct the complete file path
+    std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
+
+    return filePath.string();
 }
 
 // Function that reads the source files
@@ -54,6 +68,29 @@ void Shader::readSource(const char* vertexPath, const char* fragmentPath){
     }
 }
 
+// Create a Program object for by compiling and linking the Vertex Shader and Fragment Shader sources
+unsigned int Shader::createShader(const unsigned int vertex, const unsigned int fragment){
+    
+    // Creates a program object and returns it's ID
+    unsigned int program = glCreateProgram();
+
+    // Attach the compiled Vertex Shader Object and Fragment Shader Object to the Program Object and link them
+    glAttachShader(program, vertex);
+    glAttachShader(program, fragment);
+    glLinkProgram(program);
+
+    // Validate the program
+    glValidateProgram(program);
+
+    // Delete the Vertex Shader object and the Fragment shader object because they've been linked to the Program object
+    glDeleteShader(vertex);
+    glDeleteShader(fragment);
+
+    // Return the program's object ID
+    return program;
+}
+
+
 // Function to compile a shader (vertex shader or fragment shader depending on the argument passed)
 unsigned int Shader::CompileShader(unsigned int type, const char* source){
     
@@ -82,19 +119,6 @@ unsigned int Shader::CompileShader(unsigned int type, const char* source){
     return shader;
 }
 
-// Constructor reads and builds the shader
-Shader::Shader(const char* vertexPath, const char* fragmentPath){
-    
-    // Read the source files from their paths in this class constructor arguments
-    readSource(vertexPath, fragmentPath);
-
-    // Compile the Vertex Shader and Fragment Shader from their source retrieved by readSource()
-    unsigned int vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
-    unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
-
-    // Create the Program Object and save it's ID
-    id = createShader(vertex, fragment);
-}
 
 // Use/Activate the shader object
 void Shader::use(){

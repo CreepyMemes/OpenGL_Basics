@@ -2,8 +2,9 @@
 #include "gfx/shader.h"
 
 #include <iostream>
-#include <cassert>
 #include <filesystem>
+
+#include <cassert>
 
 //#define _USE_MATH_DEFINES
 //#include <cmath>
@@ -14,16 +15,8 @@ bool glErrorCode();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-std::string getShaderPath(const std::string& fileName, std::filesystem::path executablePath);
 
 int main(int argc, char** argv){
-
-    // Get the path of the executable
-    std::filesystem::path executablePath(argv[0]);
-
-    // Construct the complete file path
-    std::string vertexPath   = getShaderPath("shader.vs", executablePath);
-    std::string fragmentPath = getShaderPath("shader.fs", executablePath);
 
     // Initialize GLFW library
     if (!glfwInit()){
@@ -60,8 +53,8 @@ int main(int argc, char** argv){
         return -1;
     }    
 
-    // Declare our Shader Program Object
-    Shader ourShader(vertexPath.c_str(), fragmentPath.c_str());
+    // Declare our Shader Program Object with the executable's absolute path
+    Shader ourShader(argv, "shader.vs", "shader.fs");
 
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[] = {
@@ -143,7 +136,7 @@ int main(int argc, char** argv){
 
         // Change the uniform value every loop (this uniform is used by the shaderProgram in index 1)
         //ourShader.setFloat("someUniform", 1.0f);
-        //if== 1) glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
+        //glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
 
         // Check if there are errors, then print the triangle
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -207,19 +200,4 @@ bool glErrorCode() {
     }
 
     return error == "";
-}
-
-// Return the absolute path of the shaders, so the App can be run from anywhere
-std::string getShaderPath(const std::string& fileName, std::filesystem::path executablePath) {
-
-    // Extract the directory path
-    std::filesystem::path directoryPath = executablePath.parent_path();
-
-    // Go up one directory level
-    std::filesystem::path parentPath = directoryPath.parent_path();
-
-    // Construct the complete file path
-    std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
-
-    return filePath.string();
 }
