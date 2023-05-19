@@ -106,16 +106,16 @@ int main(){
     float vertices[2][24] = {
         {
             // Positions        // Colors
-             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f,
-             0.1f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f,
-            -0.9f, -0.9f, 0.0f, 0.0f, 1.0f, 0.0f,
-            -0.9f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f
+             0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 1.0f,
+             0.1f, -0.9f, 0.0f, 1.0f, 0.0f, 1.0f,
+            -0.9f, -0.9f, 0.0f, 0.0f, 0.0f, 1.0f,
+            -0.9f,  0.1f, 0.0f, 0.0f, 1.0f, 1.0f
         }, 
         {
-             0.9f,  0.9f, 0.0f, 1.0f, 0.0f, 0.0f,
+             0.9f,  0.9f, 0.0f, 0.0f, 1.0f, 1.0f,
              0.9f, -0.1f, 0.0f, 0.0f, 1.0f, 0.0f,
-            -0.1f, -0.1f, 0.0f, 0.0f, 0.0f, 1.0f,
-            -0.1f,  0.9f, 0.0f, 0.0f, 1.0f, 1.0f
+            -0.1f, -0.1f, 0.0f, 1.0f, 0.0f, 0.0f,
+            -0.1f,  0.9f, 0.0f, 0.0f, 0.0f, 1.0f
         }
     };
     
@@ -164,7 +164,7 @@ int main(){
     // Constants to manipulate the sin values
     const float multiplier = 4.0f;
     const float divider = 3.0f;
-
+ 
     // Loop until the user closes the window
     while(!glfwWindowShouldClose(window)){
        
