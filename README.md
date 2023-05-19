@@ -21,7 +21,14 @@ cmake -S . -B build/ -G "MinGW Makefiles"
 ### Finally to generate the executable file run this command:
     cmake --build build
 
-### Then run the previously generated executable with this command:
+### Then run the previously generated executable:
+
+- #### If on Linux do:
 ```
-build/App
+./build/App
+```
+
+- #### If on Windows do:
+```
+.\build\App
 ```
