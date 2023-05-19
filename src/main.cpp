@@ -52,7 +52,7 @@ int main(){
     }    
 
     // Declare our Shader Program Object
-    Shader ourShader("../res/shaders/shader.vs", "../res/shaders/shader.fs");
+    Shader ourShader("res/shaders/shader.vs", "res/shaders/shader.fs");
 
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[] = {
