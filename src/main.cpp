@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <filesystem>
 
 //#define _USE_MATH_DEFINES
 //#include <cmath>
@@ -13,8 +14,16 @@ bool glErrorCode();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+std::string getShaderPath(const std::string& fileName, std::filesystem::path executablePath);
 
-int main(){
+int main(int argc, char** argv){
+
+    // Get the path of the executable
+    std::filesystem::path executablePath(argv[0]);
+
+    // Construct the complete file path
+    std::string vertexPath   = getShaderPath("shader.vs", executablePath);
+    std::string fragmentPath = getShaderPath("shader.fs", executablePath);
 
     // Initialize GLFW library
     if (!glfwInit()){
@@ -52,7 +61,7 @@ int main(){
     }    
 
     // Declare our Shader Program Object
-    Shader ourShader("res/shaders/shader.vs", "res/shaders/shader.fs");
+    Shader ourShader(vertexPath.c_str(), fragmentPath.c_str());
 
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[] = {
@@ -198,4 +207,19 @@ bool glErrorCode() {
     }
 
     return error == "";
+}
+
+// Return the absolute path of the shaders, so the App can be run from anywhere
+std::string getShaderPath(const std::string& fileName, std::filesystem::path executablePath) {
+
+    // Extract the directory path
+    std::filesystem::path directoryPath = executablePath.parent_path();
+
+    // Go up one directory level
+    std::filesystem::path parentPath = directoryPath.parent_path();
+
+    // Construct the complete file path
+    std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
+
+    return filePath.string();
 }
