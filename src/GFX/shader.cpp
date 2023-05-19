@@ -4,14 +4,15 @@
 // Constructor reads and builds the shader
 Shader::Shader(char **argv, std::string vertexFileName, std::string fragmentFileName){
 
-    // Construct the complete shaders path
+    // Get the shaders absolute path
     std::string vertexPath   = getShaderPath(argv, vertexFileName);
     std::string fragmentPath = getShaderPath(argv, fragmentFileName);
 
-    // Read the source files from their paths in this class constructor arguments
-    readSource(vertexPath.c_str(), fragmentPath.c_str());
+    // Read the source files from their absolute paths
+    std::string vertexSource   = getSource(vertexPath);
+    std::string fragmentSource = getSource(fragmentPath);
 
-    // Compile the Vertex Shader and Fragment Shader from their source retrieved by readSource()
+    // Compile the Vertex Shader and Fragment Shader from their sources
     unsigned int vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
     unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
 
@@ -38,34 +39,31 @@ std::string Shader::getShaderPath(char** argv, const std::string fileName) {
 }
 
 // Function that reads the source files
-void Shader::readSource(const char* vertexPath, const char* fragmentPath){
+std::string Shader::getSource(std::string shaderPath){
 
     // Ensure ifstream objects can throw exceptions
-    std::ifstream vertexFile, fragmentFile;
-    vertexFile.exceptions   (std::ifstream::failbit | std::ifstream::badbit);
-    fragmentFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    std::ifstream shaderFile;
+    shaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
 
+    // Variable that will hold the stream
+    std::stringstream shaderStream;
     try{
-        // Open files
-        vertexFile.open(vertexPath);
-        fragmentFile.open(fragmentPath);
-        
-        // Read the file's buffer contents into streams
-        std::stringstream vertexStream, fragmentStream;
-        vertexStream   << vertexFile.rdbuf();
-        fragmentStream << fragmentFile.rdbuf();
+        // Open file with it's path converted to C style string
+        shaderFile.open(shaderPath.c_str());
+           
+        // Read the file's buffer contents into stream
+        shaderStream << shaderFile.rdbuf();
 
-        // Close the file handlers
-        vertexFile.close();
-        fragmentFile.close();
-
-        // Convert stream into string
-        vertexSource = vertexStream.str();
-        fragmentSource = fragmentStream.str();
+        // Close the file handler
+        shaderFile.close();
     }
     catch(std::ifstream::failure e){
         std::cerr << "ERROR: Failed to read a shader file\n" << std::endl;
+        return "";
     }
+
+    // Convert stream into string
+    return shaderStream.str();
 }
 
 // Create a Program object for by compiling and linking the Vertex Shader and Fragment Shader sources
@@ -118,7 +116,6 @@ unsigned int Shader::CompileShader(unsigned int type, const char* source){
 
     return shader;
 }
-
 
 // Use/Activate the shader object
 void Shader::use(){
