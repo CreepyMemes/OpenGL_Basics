@@ -23,5 +23,5 @@ cmake -S . -B build/ -G "MinGW Makefiles"
 
 ### Then run the previously generated executable with this command:
 ```
-build/OpenGL-Basics
+build/App
 ```
