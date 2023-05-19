@@ -15,40 +15,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 int main(){
-    // // Specify the file path relative to the current working directory
-    // std::string filePath = "../res/shaders/shader.vs";
-
-    // // Create an input file stream object and open the file
-    // std::ifstream fileStream(filePath);
-    
-    // // Check if the file was successfully opened
-    // if (fileStream.is_open()) {
-    //     // Create a string stream object
-    //     std::stringstream stringStream;
-
-    //     // Read the file content into the string stream
-    //     stringStream << fileStream.rdbuf();
-
-    //     // Close the input file stream
-    //     fileStream.close();
-
-    //     // Retrieve the content of the file from the string stream
-    //     std::string fileContent = stringStream.str();
-
-    //     // Display the file content
-    //     std::cout << fileContent << std::endl;
-    // } else {
-    //     // Failed to open the file
-    //     std::cout << "Failed to open the file." << std::endl;
-    // }
-
-    // return 0;
-
-
-
-
-
-
 
     // Initialize GLFW library
     if (!glfwInit()){
