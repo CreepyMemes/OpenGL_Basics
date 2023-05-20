@@ -16,7 +16,7 @@ bool glErrorCode();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-int main(int argc, char** argv){
+int main(){
 
     // Initialize GLFW library
     if (!glfwInit()){
@@ -54,7 +54,7 @@ int main(int argc, char** argv){
     }    
 
     // Declare our Shader Program Object with the executable's absolute path
-    Shader ourShader(argv, "shader.vs", "shader.fs");
+    Shader ourShader("shader.vs", "shader.fs");
 
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[] = {

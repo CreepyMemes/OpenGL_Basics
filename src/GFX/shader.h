@@ -26,7 +26,7 @@
             unsigned int id;
 
             // Constructor reads and builds the shader
-            Shader(char **argv, std::string vertexFileName, std::string fragmentFileName);
+            Shader(std::string vertexFileName, std::string fragmentFileName);
 
             // Use/Activate the shader object
             void use();
@@ -39,7 +39,7 @@
         private:
 
             // Return the absolute path of a specified shader's file name (so the App can be run from anywhere)
-            std::string getShaderPath(char** argv, const std::string fileName);
+            std::string getShaderPath(const std::string fileName);
 
             // Open and read the source files of the specified shader's path
             std::string getSource(std::string shaderPath);
