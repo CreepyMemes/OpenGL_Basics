@@ -3,6 +3,7 @@
 
     #include "gfx.h"
     
+    // Buffer Object Class
     class Buffer{
 
         public:

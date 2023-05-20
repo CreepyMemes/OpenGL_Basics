@@ -3,6 +3,7 @@
 
     #include "gfx.h"
     
+    // Vertex Array Object Class
     class VAO{
 
         public:
