@@ -29,6 +29,9 @@
             // Constructor reads and builds the shader
             Shader(std::string vertexFileName, std::string fragmentFileName);
 
+            // Destructor declaration
+            ~Shader();
+
             // Use/Activate the shader object
             void use();
 

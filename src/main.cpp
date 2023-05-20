@@ -1,4 +1,5 @@
 #include "GFX/gfx.h"
+#include "GFX/window.h"
 #include "GFX/shader.h"
 #include "GFX/error_handling.h"
 
@@ -7,45 +8,10 @@
 //#define _USE_MATH_DEFINES
 //#include <cmath>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
-
 int main(){
 
-    // Initialize GLFW library
-    if (!glfwInit()){
-        std::cerr << "Failed to initialize GLFW library" << std::endl;
-        return -1;
-    }
-
-    // Set the major and minor version both to 3 (OpenGL 3.3), also set GLFW to explicitly use the core-profile
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    #ifdef __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
-
-    // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-    if (window == NULL){
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    // Make the window's context current
-    glfwMakeContextCurrent(window);
-
-    // Callback function on the window that gets called each time the window is resized
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
-
-    // Initialize GLAD by passing the function to load the address of the OpenGL function pointers
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        glfwTerminate();
-        return -1;
-    }    
+    // Create our Window Object
+    Window window(800, 600, "LearnOpenGL", 3, 3, GLFW_OPENGL_CORE_PROFILE);
 
     // Declare our Shader Program Object with the executable's absolute path
     Shader ourShader("shader.vs", "shader.fs");
@@ -97,81 +63,35 @@ int main(){
 
     // Unbind the VAO once all VBOs and attrribute configurations are defined (not necessary to do)
     glBindVertexArray(0); 
-    
-
-    // Constants to manipulate the sin values
-    //const float multiplier = 4.0f;
-    //const float divider = 3.0f;
  
     // Loop until the user closes the window
-    while(!glfwWindowShouldClose(window)){
+    while(!window.shouldClose()){
        
         // Process input
-        processInput(window);
+        window.processInput();
 
         // Set the color values clear the screen with, and call glClear() to clear it
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Get current time in seconds since GLFW window has been initialized
-        //float timeValue  = glfwGetTime();
-
-        // Set the RGB values with sin wave based on "timeValue"
-        //float redValue   = (sin(multiplier * timeValue + M_PI)     + 1.0f) / divider;
-        //float greenValue = (sin(multiplier * timeValue)            + 1.0f) / divider;
-        //float blueValue  = (sin(multiplier * timeValue + M_PI / 2) + 1.0f) / divider;
-
-        // Get the location of the target uniform
-        //int vertexColorLocation = glGetUniformLocation(shaderPrograms[1], "ourColor");
-
         // Draw rectangles!
         ourShader.use();
         glBindVertexArray(VAO);
-
-        // Change the uniform value every loop (this uniform is used by the shaderProgram in index 1)
-        //ourShader.setFloat("someUniform", 1.0f);
-        //glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
 
         // Check if there are errors, then print the triangle
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glCheckError();
         
-
         // Swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        window.swapBuffers();
+        window.pollEvents();
     }
     
     // Deallocate all the resources once the main loop ended
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    //glDeleteProgram(ourShader.id); idk how you would delete the object so i'll leave it commented for now
 
-    // Terminate the GLFW window
-    glfwTerminate();
     return 0;
 }
 
-// Whenever the window size is changed (by OS or user resize) this callback function executes to update the values
-void framebuffer_size_callback(GLFWwindow* window, int width, int height){
-    glViewport(0, 0, width, height);
-}  
-
-// Process all input, query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void processInput(GLFWwindow *window){
-    // Close window if ESC is clicked
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    
-    // Draw in wireframe polygons if W is clicked
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    
-    // Switch off Wireframe mode if Q is clicked
-    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-}
