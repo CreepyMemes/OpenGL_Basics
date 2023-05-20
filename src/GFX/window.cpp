@@ -3,13 +3,13 @@
 // --------------------------------------- PUBLIC METHODS ------------------------------------------------
 
 // Constructor initializes a GLFW window with given size as arguments
-Window::Window(int width, int height, const char* title, const int versionMajor, const int versionMinor, const int profile){
+Window::Window(int width, int height, const char* title){
     
     // Initialize the GLFW library
     init();
 
     // Set the OpenGL version and profile
-    setVersionHint(versionMajor, versionMinor, profile);
+    setWindowHints();
 
     // Create the GLFW window object
     createWindow(width, height, title);
@@ -17,7 +17,7 @@ Window::Window(int width, int height, const char* title, const int versionMajor,
     // Make the window's context current
     glfwMakeContextCurrent(window);
 
-    // Callback function on the window that gets called each time the window is resized
+    // Callback function on the window that gets called every time the window is resized
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     // Initiate Glad loader
@@ -77,12 +77,13 @@ void Window::init(){
     }
 }
 
-// Set the major and minor version both to 3 (OpenGL 3.3), also set GLFW to explicitly use the core-profile
-void Window::setVersionHint(const int versionMajor, const int versionMinor, const int profile){
-    
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, versionMajor);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, versionMinor);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, profile);
+// Set the major and minor version and profile of OpenGL
+void Window::setWindowHints(){
+
+    // Setup hints
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_VERSION_MAJOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_VERSION_MINOR);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, OPENGL_PROFILE);
     #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
@@ -90,8 +91,11 @@ void Window::setVersionHint(const int versionMajor, const int versionMinor, cons
 
 // Create the GLFW window object and check for errors
 void Window::createWindow(int width, int height, const char* title){
+
+    // Create window Object
     window = glfwCreateWindow(width, height, title, NULL, NULL);
 
+    // Check if it was created successfully
     if (window == NULL){
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -102,6 +106,7 @@ void Window::createWindow(int width, int height, const char* title){
 // Initialize GLAD by passing the function to load the address of the OpenGL function pointers
 void Window::initGlad(){
 
+    // Initialize GLAD Loader and check if it goes successfully
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
         std::cerr << "Failed to initialize GLAD" << std::endl;
         glfwTerminate();
@@ -112,7 +117,7 @@ void Window::initGlad(){
 
 // --------------------------------------- OTHER FUNCTIONS ------------------------------------------------
 
-// Whenever the window size is changed (by OS or user resize) this callback function executes to update the values
+// Callback Function whenever the window size is changed (this callback function executes to update the viewport)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
 }  

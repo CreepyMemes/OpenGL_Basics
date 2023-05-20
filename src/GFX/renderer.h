@@ -15,11 +15,15 @@
             // Constructor method
             Renderer(std::string vertexFileName, std::string fragmentFileName);
 
-            // Setup the renderer
-            void bufferSetup(const void* vertices, size_t verticesSize, const void* indices, size_t indicesSize, GLenum usage);
+            // Setup the VBO and EBO data/configurations 
+            void setVBO(const void* vertices, size_t verticesSize,GLenum usage);
+            void setEBO(const void* indices,  size_t indicesSize, GLenum usage);
             
-            // Render
+            // Draw stuff with VAO configuration
             void render();
+
+            // Clear the screen
+            void clear();
 
         private:
 

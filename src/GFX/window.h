@@ -5,12 +5,18 @@
     #include <iostream>
     #include <cassert>
 
+    // Set OpenGL version and profile
+    #define OPENGL_VERSION_MAJOR 3
+    #define OPENGL_VERSION_MINOR 3
+    #define OPENGL_PROFILE GLFW_OPENGL_CORE_PROFILE
+
+    // Window Object Class
     class Window {
 
         public:
 
             // Constructor initializes a GLFW window with given size as arguments
-            Window(int width, int height, const char* title, const int versionMajor, const int versionMinor, const int profile);
+            Window(int width, int height, const char* title);
 
             // Destructor declaration
             ~Window();
@@ -36,7 +42,7 @@
             void init();
 
             // Set the window's OpenGL version and profile hints
-            void setVersionHint(const int versionMajor, const int versionMinor, const int profile);
+            void setWindowHints();
 
             // Create the GLFW window object and check for errors
             void createWindow(int width, int height, const char* title);
