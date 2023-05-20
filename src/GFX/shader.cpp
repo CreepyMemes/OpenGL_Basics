@@ -2,12 +2,11 @@
 #include "shader.h"
 
 // Constructor reads and builds the shader
-Shader::Shader(char **argv, std::string vertexFileName, std::string fragmentFileName){
+Shader::Shader(char** argv, std::string vertexFileName, std::string fragmentFileName){
 
     // Get the shaders absolute path
     std::string vertexPath   = getShaderPath(argv, vertexFileName);
     std::string fragmentPath = getShaderPath(argv, fragmentFileName);
-
     // Read the source files from their absolute paths
     std::string vertexSource   = getSource(vertexPath);
     std::string fragmentSource = getSource(fragmentPath);
@@ -23,16 +22,14 @@ Shader::Shader(char **argv, std::string vertexFileName, std::string fragmentFile
 // Return the absolute path of the shaders, so the App can be run from anywhere
 std::string Shader::getShaderPath(char** argv, const std::string fileName) {
 
-    // Get the path of the executable
-    std::filesystem::path executablePath(argv[0]);
+    // Get the executable's absolute path
+    char basePath[255] = "";
+    std::filesystem::path executablePath = (std::filesystem::path)_fullpath(basePath, argv[0], sizeof(basePath));
 
-    // Extract the directory path
-    std::filesystem::path directoryPath = executablePath.parent_path();
+    // Go back one directory level
+    std::filesystem::path parentPath = executablePath.parent_path().parent_path();
 
-    // Go up one directory level
-    std::filesystem::path parentPath = directoryPath.parent_path();
-
-    // Construct the complete file path
+    // Construct the shader's file path
     std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
 
     return filePath.string();
