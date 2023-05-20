@@ -22,12 +22,11 @@ Shader::Shader(std::string vertexFileName, std::string fragmentFileName){
 // Return the absolute path of the shaders, so the App can be run from anywhere
 std::string Shader::getShaderPath(const std::string fileName) {
 
-    // Get the executable's absolute path
-    char basePath[255] = "";
-    getExecutablePath(basePath, sizeof(basePath));
+    // Load the executable's absolute path to the path buffer
+    char bufferPath[255] = ""; getExecutablePath(bufferPath, sizeof(bufferPath));
 
-    // Convert the executable's path to a pash type
-    std::filesystem::path executablePath(basePath);
+    // Get the executable's path by converting the buffer to a filesystem::path type
+    std::filesystem::path executablePath(bufferPath);
 
     // Go back one directory level
     std::filesystem::path parentPath = executablePath.parent_path().parent_path();

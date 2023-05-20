@@ -8,7 +8,8 @@
     #include <sstream>
     #include <iostream>
     #include <filesystem>
-
+    
+    // Defining OS dependant executable's absolute path retrieval
     #ifdef _WIN32
         #include <io.h>
         #define getExecutablePath(buf, size) _fullpath((buf), _pgmptr, (size))
