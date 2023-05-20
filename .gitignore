@@ -1,6 +1,9 @@
 # Any crap relating builds
 [Bu][Uu][Ii][Ll][Dd]/
 
+# vscode intellisense crap
+.vscode/
+
 # Prerequisites
 *.d
 
