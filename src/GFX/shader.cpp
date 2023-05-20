@@ -26,9 +26,8 @@ std::string Shader::getShaderPath(const std::string fileName) {
     char basePath[255] = "";
     getExecutablePath(basePath, sizeof(basePath));
 
+    // Convert the executable's path to a pash type
     std::filesystem::path executablePath(basePath);
-
-    std::cout<<"exePath= "<<_pgmptr<<std::endl;
 
     // Go back one directory level
     std::filesystem::path parentPath = executablePath.parent_path().parent_path();
