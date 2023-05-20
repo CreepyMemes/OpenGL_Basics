@@ -1,17 +1,11 @@
 #include "GFX/gfx.h"
 #include "GFX/shader.h"
+#include "GFX/error_handling.h"
 
 #include <iostream>
-#include <filesystem>
-
-#include <cassert>
 
 //#define _USE_MATH_DEFINES
 //#include <cmath>
-
-// Check if there are errors, if one is found print it then kill the execution with assert
-bool glErrorCode();
-#define glCheckError() assert(glErrorCode())
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -180,24 +174,4 @@ void processInput(GLFWwindow *window){
     
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-}
-
-// Check if there are errors and return False if an error is found, so assert can kill the program
-bool glErrorCode() {
-    std::string error = "";
-
-    while (GLenum errorCode = glGetError()){
-        switch (errorCode){
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-            //case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            //case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-        }
-        std::cerr << "[OPENGL ERROR: " << error << "]" << std::endl;
-    }
-
-    return error == "";
 }

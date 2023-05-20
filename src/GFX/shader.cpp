@@ -1,4 +1,3 @@
-
 #include "shader.h"
 
 // Constructor reads and builds the shader
