@@ -24,7 +24,11 @@ std::string Shader::getShaderPath(char** argv, const std::string fileName) {
 
     // Get the executable's absolute path
     char basePath[255] = "";
-    std::filesystem::path executablePath = (std::filesystem::path)_fullpath(basePath, argv[0], sizeof(basePath));
+    getExecutablePath(basePath, sizeof(basePath));
+
+    std::filesystem::path executablePath(basePath);
+
+    std::cout<<"exePath= "<<executablePath<<std::endl;
 
     // Go back one directory level
     std::filesystem::path parentPath = executablePath.parent_path().parent_path();

@@ -9,6 +9,14 @@
     #include <iostream>
     #include <filesystem>
 
+    #ifdef _WIN32
+        #include <io.h>
+        #define getExecutablePath(buf, size) _fullpath((buf), _pgmptr, (size))
+    #else
+        #include <unistd.h>
+        #define getExecutablePath(buf, size) readlink("/proc/self/exe", (buf), (size))
+    #endif
+
     // Shader Program Object that reads the shader source files, compiles and links them
     class Shader{
 
