@@ -3,7 +3,7 @@
 
 ### First of all clone this repo (and it's submodules automatically) with this command:
 ```
-git clone https://github.com/CreepyMemes/OpenGL_Basics --recursive
+git clone --recursive https://github.com/CreepyMemes/glTemplate.git
 ```
 
 ### From the _root directory_, to generate the cmake configuration run this command:
