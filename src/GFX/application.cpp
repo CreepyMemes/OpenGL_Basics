@@ -1,7 +1,7 @@
-#include "game.h"
+#include "application.h"
 
-
-Game::Game()
+// Application Object Constructor with predefined window size, title and shaders locations (for now)
+Application::Application()
     : window(800, 600, "LearnOpenGL"),
       renderer("shader.vs", "shader.fs") {
 
@@ -26,8 +26,8 @@ Game::Game()
     renderer.setEBO(indices,  sizeof(indices),   GL_STATIC_DRAW);
 }
 
-// Main Game Application Loop
-void Game::run(){
+// Main Application Application Loop
+void Application::run(){
 
     // Loop until the user closes the window
     while(!window.shouldClose()){

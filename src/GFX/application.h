@@ -1,21 +1,21 @@
-#ifndef GAME_H
-    #define GAME_H
+#ifndef APPLICATION_H
+    #define APPLICATION_H
 
     #include "window.h"
     #include "renderer.h"
 
-    // Main Game Object Class
-    class Game{   
+    // Main Application Object Class
+    class Application{   
 
         public:
 
             // Constructor Method
-            Game();
+            Application();
 
             // Destructor Method
-            //~Game();
+            //~Application();
 
-            // Main Game Loop
+            // Main Application Loop
             void run();
         
         private:

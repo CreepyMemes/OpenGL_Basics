@@ -12,7 +12,7 @@
 
         public:
 
-            // Constructor method
+            // Constructor method that compiles verted and fragment shaders by their file name
             Renderer(std::string vertexFileName, std::string fragmentFileName);
 
             // Setup the VBO and EBO data/configurations 
