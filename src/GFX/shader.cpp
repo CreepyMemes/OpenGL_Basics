@@ -8,6 +8,7 @@ Shader::Shader(std::string vertexFileName, std::string fragmentFileName){
     // Get the shaders absolute path
     std::string vertexPath   = getShaderPath(vertexFileName);
     std::string fragmentPath = getShaderPath(fragmentFileName);
+
     // Read the source files from their absolute paths
     std::string vertexSource   = getSource(vertexPath);
     std::string fragmentSource = getSource(fragmentPath);
@@ -82,8 +83,8 @@ std::string Shader::getSource(std::string shaderPath){
         shaderFile.close();
     }
     catch(std::ifstream::failure e){
-        std::cerr << "ERROR: Failed to read a shader file\n" << std::endl;
-        return "";
+        std::cerr << "[Shader Error: Failed to read a shader file]" << std::endl;
+        abort();
     }
 
     // Convert stream into string
@@ -91,10 +92,10 @@ std::string Shader::getSource(std::string shaderPath){
 }
 
 // Function to compile a shader (vertex shader or fragment shader depending on the argument passed)
-unsigned int Shader::CompileShader(unsigned int type, const char* source){
+GLuint Shader::CompileShader(GLuint type, const char* source){
     
     // Creates a shader object and returns it's ID
-    unsigned int shader = glCreateShader(type);
+    GLuint shader = glCreateShader(type);
 
     // Replaces the source code in a shader object
     glShaderSource(shader, 1, &source, NULL);
@@ -109,20 +110,20 @@ unsigned int Shader::CompileShader(unsigned int type, const char* source){
         int length;           glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
         char infoLog[length]; glGetShaderInfoLog(shader, length, &length, infoLog);
 
-        std::cerr << "ERROR: " << (type == GL_VERTEX_SHADER ? "Vertex" : "Fragment") << " Shader Failed to compile\n" << infoLog << std::endl;
+        std::cerr << "[Shader Error: " << (type == GL_VERTEX_SHADER ? "Vertex" : "Fragment") << " Shader Failed to compile]\n" << infoLog << std::endl;
 
         glDeleteShader(shader);
-        return 0;
+        abort();
     }
 
     return shader;
 }
 
 // Create a Program object for by compiling and linking the Vertex Shader and Fragment Shader sources
-unsigned int Shader::createShader(const unsigned int vertex, const unsigned int fragment){
+GLuint Shader::createShader(const GLuint vertex, const GLuint fragment){
     
     // Creates a program object and returns it's ID
-    unsigned int program = glCreateProgram();
+    GLuint program = glCreateProgram();
 
     // Attach the compiled Vertex Shader Object and Fragment Shader Object to the Program Object and link them
     glAttachShader(program, vertex);
