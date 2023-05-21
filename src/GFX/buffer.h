@@ -3,30 +3,19 @@
 
     #include "gfx.h"
     
-    // Buffer Object Class
     class Buffer{
 
         public:
-            // Constructor method
-            Buffer(GLenum type);
-
-            // Destructor method
+            Buffer(GLint type, bool dynamic);
             ~Buffer();
 
-            // Bind the VBO
             void bind();
-
-            // Bind the VBO
-            void unbind();
-
-            // Set the VBO's data configuration
-            void setData(const void* data, size_t size, GLenum usage);
+            void setData(const void* data, size_t size);
 
         private:
-
-            // The VAO's object ID
-            unsigned int id;
-            GLenum type;
+            GLuint handle;
+            GLint type;
+            bool dynamic;
     };
 
 #endif

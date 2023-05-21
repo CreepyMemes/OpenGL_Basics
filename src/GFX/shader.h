@@ -24,7 +24,7 @@
         public:
 
             // the program's ID
-            unsigned int id;
+            unsigned int handle;
 
             // Constructor reads and builds the shader
             Shader(std::string vertexFileName, std::string fragmentFileName);

@@ -3,25 +3,14 @@
 // --------------------------------------- PUBLIC METHODS ------------------------------------------------
 
 // Constructor initializes a GLFW window with given size as arguments
-Window::Window(int width, int height, const char* title){
+Window::Window(){
     
-    // Initialize the GLFW library
-    init();
-
-    // Set the OpenGL version and profile
-    setWindowHints();
-
-    // Create the GLFW window object
-    createWindow(width, height, title);
-
-    // Make the window's context current
+    initGlfw();
+    setVersion();
+    createWindow();
     glfwMakeContextCurrent(window);
-
-    // Callback function on the window that gets called every time the window is resized
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
-
-    // Initiate Glad loader
     initGlad();
+    setupCallbacks();
 }
 
 // Destructor method, that destroys the GLFW window object
@@ -31,7 +20,7 @@ Window::~Window() {
 }
 
 // Check if the window should close
-bool Window::shouldClose() const {
+bool Window::shouldClose() {
     return glfwWindowShouldClose(window);
 }
 
@@ -54,33 +43,30 @@ void Window::processInput(){
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 }
 
-// Swap buffers
-void Window::swapBuffers(){
+// Swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+void Window::update(){
     glfwSwapBuffers(window);
-}
-
-//poll IO events (keys pressed/released, mouse moved etc.)
-void Window::pollEvents(){
-   glfwPollEvents();
+    glfwPollEvents();
 }
 
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
 // Attempt to initialize the GLFW library, return -1 if failed
-void Window::init(){
+void Window::initGlfw(){
 
     bool success = glfwInit();
     if (success == GLFW_FALSE){
         std::cerr << "[GLFW Error: Failed to initialize GLFW library]" << std::endl;
-        assert(success);
+        abort();
     }
 }
 
 // Set the major and minor version and profile of OpenGL
-void Window::setWindowHints(){
+void Window::setVersion(){
 
     // Setup hints
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_VERSION_MAJOR);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_VERSION_MINOR);
     glfwWindowHint(GLFW_OPENGL_PROFILE, OPENGL_PROFILE);
@@ -90,17 +76,23 @@ void Window::setWindowHints(){
 }
 
 // Create the GLFW window object and check for errors
-void Window::createWindow(int width, int height, const char* title){
+void Window::createWindow(){
 
     // Create window Object
-    window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window = glfwCreateWindow(width, height, "OpenGL Template", NULL, NULL);
 
     // Check if it was created successfully
     if (window == NULL){
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        assert(window != NULL);
+        std::cerr << "[GLFW Error: Failed to create GLFW window]" << std::endl;
+        abort();
     }
+}
+
+// Setup all the call back functions
+void Window::setupCallbacks(){
+
+    // Callback function when the window gets resized
+    glfwSetFramebufferSizeCallback(window, onResized);  
 }
 
 // Initialize GLAD by passing the function to load the address of the OpenGL function pointers
@@ -108,16 +100,12 @@ void Window::initGlad(){
 
     // Initialize GLAD Loader and check if it goes successfully
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        glfwTerminate();
-        assert(false);
+        std::cerr << "[GLAD Error: Failed to initialize GLAD loader]" << std::endl;
+        abort();
     }    
 }
 
-
-// --------------------------------------- OTHER FUNCTIONS ------------------------------------------------
-
 // Callback Function whenever the window size is changed (this callback function executes to update the viewport)
-void framebuffer_size_callback(GLFWwindow* window, int width, int height){
+void Window::onResized(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
 }  

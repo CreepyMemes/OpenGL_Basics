@@ -2,28 +2,19 @@
     #define VAO_H
 
     #include "gfx.h"
+    #include "buffer.h"
     
-    // Vertex Array Object Class
     class VAO{
 
         public:
-
-            // Constructor method
             VAO();
-
-            // Destructor method
             ~VAO();
 
-            // Bind the VAO
             void bind();
+            void setAttribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
 
-            // Bind the VAO
-            void unbind();
-
-        private:
-        
-            // The VAO's object ID
-            unsigned int id;
+        private:    
+            GLuint handle;
     };
 
 #endif

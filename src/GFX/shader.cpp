@@ -17,28 +17,28 @@ Shader::Shader(std::string vertexFileName, std::string fragmentFileName){
     unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
 
     // Create the Program Object and save it's ID
-    id = createShader(vertex, fragment);
+    handle = createShader(vertex, fragment);
 }
 
 // Destructor method, that destroys the Shader Program Object
 Shader::~Shader() {
-    glDeleteProgram(id);
+    glDeleteProgram(handle);
 }
 
 // Use/Activate the shader object
 void Shader::use(){
-    glUseProgram(id);
+    glUseProgram(handle);
 }
 
 // Utility uniform functions
 void Shader::setBool (const std::string &name, bool  value) const{
-    glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
+    glUniform1i(glGetUniformLocation(handle, name.c_str()), (int)value);
 }
 void Shader::setInt  (const std::string &name, int   value) const{
-    glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }
 void Shader::setFloat(const std::string &name, float value) const{
-    glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+    glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
 
 

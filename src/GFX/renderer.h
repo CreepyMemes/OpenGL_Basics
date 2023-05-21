@@ -7,33 +7,19 @@
     #include "shader.h"
     #include "error_handling.h"
 
-    // Renderer Object Class
     class Renderer {
 
         public:
-
-            // Constructor method that compiles verted and fragment shaders by their file name
             Renderer(std::string vertexFileName, std::string fragmentFileName);
 
-            // Setup the VBO and EBO data/configurations 
-            void setVBO(const void* vertices, size_t verticesSize,GLenum usage);
-            void setEBO(const void* indices,  size_t indicesSize, GLenum usage);
-            
-            // Draw stuff with VAO configuration
+            void setBuffers();
             void render();
-
-            // Clear the screen
             void clear();
+            void draw();
 
         private:
-
-            // Vertex Array Object
-            VAO vao;
-
-            // Vertex and Element Buffer Objects
+            VAO vao; 
             Buffer vbo, ebo;
-
-            // This object's shader
             Shader shader;
         };
 
