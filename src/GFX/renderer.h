@@ -14,13 +14,21 @@
 
             void setBuffers();
             void render();
-            void clear();
-            void draw();
 
         private:
             VAO vao; 
             Buffer vbo, ebo;
             Shader shader;
+
+            float xoffset=0;
+            float yoffset=0;
+
+            float xcount= 0.005;
+            float ycount= 0.008;
+            
+            void clear();
+            void draw();
+
         };
 
 #endif

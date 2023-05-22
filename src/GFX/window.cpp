@@ -3,8 +3,7 @@
 // --------------------------------------- PUBLIC METHODS ------------------------------------------------
 
 // Constructor initializes a GLFW window with given size as arguments
-Window::Window(){
-    
+Window::Window(const int width, const int height, const char* title) : width(width), height(height), title(title){   
     initGlfw();
     setVersion();
     createWindow();
@@ -17,6 +16,8 @@ Window::Window(){
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
+
+    delete renderer; // Clean up the dynamically allocated object
 }
 
 // Check if the window should close
@@ -49,6 +50,21 @@ void Window::update(){
     glfwPollEvents();
 }
 
+// Dynamically allocate renderer object
+void Window::initRenderer(const std::string &vertexFileName, const std::string &fragmentFileName){
+    renderer = new Renderer(vertexFileName, fragmentFileName);
+}
+
+// Set pointer to renderer's render method
+void Window::render(){
+    renderer -> render();
+}
+
+// Set pointer to renderer's setBuffer method
+void Window::setBuffers(){
+    renderer -> setBuffers();
+}
+
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
@@ -79,7 +95,7 @@ void Window::setVersion(){
 void Window::createWindow(){
 
     // Create window Object
-    window = glfwCreateWindow(width, height, "OpenGL Template", NULL, NULL);
+    window = glfwCreateWindow(width, height, title, NULL, NULL);
 
     // Check if it was created successfully
     if (window == NULL){

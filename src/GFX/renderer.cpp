@@ -13,10 +13,10 @@ void Renderer::setBuffers(){
     float vertices[] = {
         
         // Positions        // Colors
-         0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f    
+         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f,
+         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f   
     };
     
     // Create an array that contains the indices of the vertices that will be loaded into the EBO (face buffer)
@@ -40,13 +40,22 @@ void Renderer::render() {
     vao.bind();
     shader.use();
 
+    shader.setFloat("xoffset", xoffset);
+    shader.setFloat("yoffset", yoffset);
+
+    xoffset += xcount;
+    yoffset += ycount;
+
+    if(xoffset >= 0.8 | xoffset <= -0.8) xcount *= -1;
+    if(yoffset >= 0.8 | yoffset <= -0.8) ycount *= -1;
+
     clear();
     draw();
 }
 
 // Clear the screen and check for errors
 void Renderer::clear(){
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glCheckError();
 }

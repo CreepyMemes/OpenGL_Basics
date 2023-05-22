@@ -2,7 +2,6 @@
     #define APPLICATION_H
 
     #include "window.h"
-    #include "renderer.h"
 
     class Application{   
 
@@ -13,7 +12,6 @@
         
         private:
             Window window;
-            Renderer renderer;
     };
 
 #endif
