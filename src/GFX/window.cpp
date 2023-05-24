@@ -23,6 +23,7 @@ Window::~Window() {
     delete renderer; // Clean up the dynamically allocated object
 }
 
+// The main run function that runs until the user closes the window
 void Window::run(){
     while(!shouldClose()){    
         processInput();
