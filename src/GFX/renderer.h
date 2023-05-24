@@ -1,13 +1,10 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <cassert>
-
 #include "gfx.h"
 #include "vao.h"
 #include "buffer.h"
 #include "shader.h"
+#include "error_handling.h"
 
 class Renderer {
 
@@ -32,8 +29,3 @@ class Renderer {
         void draw();
 
     };
-
-
-// Easy macro to automatically kill the execution if an OpenGL errors is found
-#define glCheckError() assert(glErrorCode())
-bool glErrorCode();

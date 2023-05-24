@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gfx.h"
+#include "error_handling.h"
 
 #include <iostream>
 #include <string>
