@@ -32,14 +32,24 @@ void Shader::use(){
 }
 
 // Utility uniform functions
-void Shader::setBool (const std::string& name, bool  value) const{
-    glUniform1i(glGetUniformLocation(handle, name.c_str()), (int)value);
+void Shader::setBool (const std::string& name, bool  value){
+    glUniform1i(getUniformLocation(name), (int)value);
 }
-void Shader::setInt  (const std::string& name, int   value) const{
-    glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
+void Shader::setInt  (const std::string& name, int   value){
+    glUniform1i(getUniformLocation(name), value);
 }
-void Shader::setFloat(const std::string& name, float value) const{
-    glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
+void Shader::setFloat(const std::string& name, float value){
+    glUniform1f(getUniformLocation(name), value);
+}
+
+GLint Shader::getUniformLocation(const std::string& name){
+    GLint result = glGetUniformLocation(handle, name.c_str());
+
+    if(result == -1){
+        std::cout<<"[Shader Error: uniform '"<<name<<"' not found in shader]\n";
+        abort();
+    }
+    return result;
 }
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
