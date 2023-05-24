@@ -42,14 +42,22 @@ void Shader::setFloat(const std::string& name, float value){
     glUniform1f(getUniformLocation(name), value);
 }
 
+// Checks if the location of a given uniform is already saved in the unordered map, if not then gets it's location and checks if it's valid then saves it in cache
 GLint Shader::getUniformLocation(const std::string& name){
-    GLint result = glGetUniformLocation(handle, name.c_str());
 
-    if(result == -1){
+    if(uniform_location_cache.find(name) != uniform_location_cache.end())
+        return uniform_location_cache[name];
+
+    GLint location = glGetUniformLocation(handle, name.c_str());
+
+    if(location == -1){
         std::cout<<"[Shader Error: uniform '"<<name<<"' not found in shader]\n";
         abort();
     }
-    return result;
+    
+    uniform_location_cache[name] = location;
+
+    return location;
 }
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------

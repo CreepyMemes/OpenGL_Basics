@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
 
 // Defining OS dependant executable's absolute path retrieval
 #ifdef _WIN32
@@ -30,6 +31,7 @@ class Shader{
 
     private:
         GLuint handle;
+        std::unordered_map<std::string, GLint> uniform_location_cache;
 
         std::string getShaderPath(const std::string& fileName);
         std::string getParentPath(const std::string& path);
