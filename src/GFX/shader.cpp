@@ -73,17 +73,17 @@ std::string Shader::getShaderPath(const std::string& fileName) {
 
     // Go back one directory level (ignoring the current App executable)
     std::string parentPath = getParentPath(getParentPath(executablePath));
-    
+
     // Construct the shader's file path
-    std::string filePath = parentPath + "\\res\\shaders\\" + fileName;
-    
+    std::string filePath = parentPath + BAR + "res" + BAR + "shaders" + BAR + fileName;
+
     return filePath;
 }
 
 // Get the parent path of a given string type path
 std::string Shader::getParentPath(const std::string& path) {
 
-    size_t lastSeparator = path.find_last_of('\\');
+    size_t lastSeparator = path.find_last_of(BAR);
 
     if (lastSeparator != std::string::npos) {
         return path.substr(0, lastSeparator);
