@@ -10,37 +10,31 @@ Window::Window(){
     glfwMakeContextCurrent(window);
     init_glad();
     setupCallbacks();
-
-    init_renderer("shader.vs", "shader.fs");
-    renderer -> setBuffers(); 
 }
 
 // Destructor method, that destroys the GLFW window object
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
-
-    delete renderer; // Delete the dynamically allocated object
 }
 
-// The main run function that runs until the user closes the window
-void Window::run(){
-    while(!glfwWindowShouldClose(window)){    
-        processInput();
-        renderer -> render();
+// Check if the window should close
+bool Window::shouldClose() {
+    return glfwWindowShouldClose(window);
+}
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+// Swap frond and back buffers
+void Window::swapBuffers(){
+    glfwSwapBuffers(window);
+}
+
+// Poll IO events (keys pressed/released, mouse moved etc.)
+void Window::pollEvents(){
+    glfwPollEvents();
 }
 
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
-
-// Dynamically allocate renderer object
-void Window::init_renderer(const std::string& vertexFileName, const std::string& fragmentFileName){
-    renderer = new Renderer(vertexFileName, fragmentFileName);
-}
 
 // Process incoming inputs
 void Window::processInput(){
