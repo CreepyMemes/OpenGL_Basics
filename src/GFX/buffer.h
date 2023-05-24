@@ -1,21 +1,19 @@
-#ifndef BUFFER_H
-    #define BUFFER_H
+#pragma once
 
-    #include "gfx.h"
-    
-    class Buffer{
+#include "gfx.h"
 
-        public:
-            Buffer(GLint type, bool dynamic);
-            ~Buffer();
+class Buffer{
 
-            void bind();
-            void setData(const void* data, size_t size);
+    public:
+        Buffer(GLint type, bool dynamic);
+        ~Buffer();
 
-        private:
-            GLuint handle;
-            GLint type;
-            bool dynamic;
-    };
+        void bind();
+        void setData(const void* data, size_t size);
 
-#endif
+    private:
+        GLuint handle;
+        GLint type;
+        bool dynamic;
+};
+

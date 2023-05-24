@@ -1,17 +1,14 @@
-#ifndef APPLICATION_H
-    #define APPLICATION_H
+#pragma once
 
-    #include "window.h"
+#include "window.h"
 
-    class Application{   
+class Application{   
 
-        public:
-            Application();
+    public:
+        Application();
 
-            void run();
-        
-        private:
-            Window window;
-    };
-
-#endif
+        void run();
+    
+    private:
+        Window window;
+};

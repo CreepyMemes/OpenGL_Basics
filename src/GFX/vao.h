@@ -1,20 +1,17 @@
-#ifndef VAO_H
-    #define VAO_H
+#pragma once
 
-    #include "gfx.h"
-    #include "buffer.h"
-    
-    class VAO{
+#include "gfx.h"
+#include "buffer.h"
 
-        public:
-            VAO();
-            ~VAO();
+class VAO{
 
-            void bind();
-            void setAttribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
+    public:
+        VAO();
+        ~VAO();
 
-        private:    
-            GLuint handle;
-    };
+        void bind();
+        void setAttribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
 
-#endif
+    private:    
+        GLuint handle;
+};

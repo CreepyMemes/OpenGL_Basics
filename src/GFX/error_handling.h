@@ -1,16 +1,13 @@
-#ifndef ERROR_HANDLING_H
-    #define ERROR_HANDLING_H
-    
-    #include "gfx.h"
+#pragma once
 
-    #include <iostream>
-    #include <string>
-    #include <cassert>
+#include "gfx.h"
 
-    // Function that checks if there any errors, then returns their code if any are found
-    bool glErrorCode();
+#include <iostream>
+#include <string>
+#include <cassert>
 
-    // Easy macro to automatically kill the execution if an OpenGL errors is found
-    #define glCheckError() assert(glErrorCode())
+// Function that checks if there any errors, then returns their code if any are found
+bool glErrorCode();
 
-#endif
+// Easy macro to automatically kill the execution if an OpenGL errors is found
+#define glCheckError() assert(glErrorCode())
