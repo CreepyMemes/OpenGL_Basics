@@ -14,8 +14,8 @@ Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFil
     std::string fragmentSource = getSource(fragmentPath);
 
     // Compile the Vertex Shader and Fragment Shader from their sources
-    unsigned int vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
-    unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
+    GLuint vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
+    GLuint fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource.c_str());
 
     // Create the Program Object and save it's ID
     handle = createShader(vertex, fragment);
