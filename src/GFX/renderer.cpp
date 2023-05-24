@@ -37,7 +37,7 @@ void Renderer::setBuffers(){
 // Draw things with previously configured VAO and it's VBO/EBO data and us the shader
 void Renderer::render() {
     vao.bind();
-    shader.use();
+    shader.bind();
 
     shader.setFloat("xoffset", xoffset);
     shader.setFloat("yoffset", yoffset);

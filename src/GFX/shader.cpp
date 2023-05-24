@@ -27,7 +27,7 @@ Shader::~Shader() {
 }
 
 // Use/Activate the shader object
-void Shader::use(){
+void Shader::bind(){
     glUseProgram(handle);
 }
 

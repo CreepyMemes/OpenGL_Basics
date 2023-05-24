@@ -22,7 +22,7 @@ class Shader{
         Shader(const std::string& vertexFileName, const std::string& fragmentFileName);
         ~Shader();
 
-        void use();
+        void bind();
 
         void setBool (const std::string& name, bool  value);        
         void setInt  (const std::string& name, int   value);
@@ -36,7 +36,6 @@ class Shader{
         std::string getSource(const std::string& shaderPath);
 
         GLint getUniformLocation(const std::string& name);
-
 
         GLuint CompileShader(const GLuint type, const char* source);
         GLuint createShader(const GLuint vertex, const GLuint fragment);
