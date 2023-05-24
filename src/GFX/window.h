@@ -17,14 +17,6 @@ class Window {
 
         void run();
 
-        bool shouldClose();
-        void processInput();
-        void update();
-
-        void initRenderer(const std::string &vertexFileName, const std::string &fragmentFileName);
-        void setBuffers();
-        void render();
-
     private:
         GLFWwindow* window;
         Renderer* renderer;
@@ -33,11 +25,15 @@ class Window {
         const int height = 720;
         const char* title = "OpenGL Template";
 
-        void initGlfw();
+        void init_renderer(const std::string &vertexFileName, const std::string &fragmentFileName);
+        
+        void processInput();
+
+        void init_glfw();
         void setVersion();
         void createWindow();
         void setupCallbacks();
-        void initGlad();
+        void init_glad();
 
-        static void onResized(GLFWwindow* window, int width, int height);
+        static void resize_callback(GLFWwindow* window, int width, int height);
 };

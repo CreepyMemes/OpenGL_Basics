@@ -4,15 +4,15 @@
 
 // Constructor initializes a GLFW window with given size as arguments
 Window::Window(){   
-    initGlfw();
+    init_glfw();
     setVersion();
     createWindow();
     glfwMakeContextCurrent(window);
-    initGlad();
+    init_glad();
     setupCallbacks();
 
-    initRenderer("shader.vs", "shader.fs");
-    setBuffers(); 
+    init_renderer("shader.vs", "shader.fs");
+    renderer -> setBuffers(); 
 }
 
 // Destructor method, that destroys the GLFW window object
@@ -20,21 +20,26 @@ Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
 
-    delete renderer; // Clean up the dynamically allocated object
+    delete renderer; // Delete the dynamically allocated object
 }
 
 // The main run function that runs until the user closes the window
 void Window::run(){
-    while(!shouldClose()){    
+    while(!glfwWindowShouldClose(window)){    
         processInput();
-        render();
-        update();
+        renderer -> render();
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 }
 
-// Check if the window should close
-bool Window::shouldClose() {
-    return glfwWindowShouldClose(window);
+
+// --------------------------------------- PRIVATE METHODS ------------------------------------------------
+
+// Dynamically allocate renderer object
+void Window::init_renderer(const std::string& vertexFileName, const std::string& fragmentFileName){
+    renderer = new Renderer(vertexFileName, fragmentFileName);
 }
 
 // Process incoming inputs
@@ -56,34 +61,10 @@ void Window::processInput(){
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 }
 
-// Swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-void Window::update(){
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-}
-
-// Dynamically allocate renderer object
-void Window::initRenderer(const std::string &vertexFileName, const std::string &fragmentFileName){
-    renderer = new Renderer(vertexFileName, fragmentFileName);
-}
-
-// Set pointer to renderer's render method
-void Window::render(){
-    renderer -> render();
-}
-
-// Set pointer to renderer's setBuffer method
-void Window::setBuffers(){
-    renderer -> setBuffers();
-}
-
-
-// --------------------------------------- PRIVATE METHODS ------------------------------------------------
-
 // Attempt to initialize the GLFW library, return -1 if failed
-void Window::initGlfw(){
-
+void Window::init_glfw(){
     bool success = glfwInit();
+
     if (success == GLFW_FALSE){
         std::cerr << "[GLFW Error: Failed to initialize GLFW library]" << std::endl;
         abort();
@@ -92,8 +73,6 @@ void Window::initGlfw(){
 
 // Set the major and minor version and profile of OpenGL
 void Window::setVersion(){
-
-    // Setup hints
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_VERSION_MAJOR);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_VERSION_MINOR);
@@ -105,11 +84,8 @@ void Window::setVersion(){
 
 // Create the GLFW window object and check for errors
 void Window::createWindow(){
-
-    // Create window Object
     window = glfwCreateWindow(width, height, title, NULL, NULL);
 
-    // Check if it was created successfully
     if (window == NULL){
         std::cerr << "[GLFW Error: Failed to create GLFW window]" << std::endl;
         abort();
@@ -118,15 +94,11 @@ void Window::createWindow(){
 
 // Setup all the call back functions
 void Window::setupCallbacks(){
-
-    // Callback function when the window gets resized
-    glfwSetFramebufferSizeCallback(window, onResized);  
+    glfwSetFramebufferSizeCallback(window, resize_callback);  
 }
 
 // Initialize GLAD by passing the function to load the address of the OpenGL function pointers
-void Window::initGlad(){
-
-    // Initialize GLAD Loader and check if it goes successfully
+void Window::init_glad(){
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
         std::cerr << "[GLAD Error: Failed to initialize GLAD loader]" << std::endl;
         abort();
@@ -134,6 +106,6 @@ void Window::initGlad(){
 }
 
 // Callback Function whenever the window size is changed (this callback function executes to update the viewport)
-void Window::onResized(GLFWwindow* window, int width, int height){
+void Window::resize_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
 }  
