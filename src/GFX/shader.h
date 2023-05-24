@@ -13,11 +13,11 @@
 #ifdef _WIN32
     #include <io.h>
     #define getExecutablePath(buf, size) _fullpath((buf), _pgmptr, (size))
-    #define BAR '\\'
+    #define SLASH '\\'
 #else
     #include <unistd.h>
     #define getExecutablePath(buf, size) readlink("/proc/self/exe", (buf), (size))
-    #define BAR '/'
+    #define SLASH '/'
 #endif
 
 class Shader{
