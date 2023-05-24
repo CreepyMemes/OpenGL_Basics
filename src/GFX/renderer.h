@@ -9,7 +9,7 @@
 class Renderer {
 
     public:
-        Renderer(std::string vertexFileName, std::string fragmentFileName);
+        Renderer(const std::string& vertexFileName, const std::string& fragmentFileName);
 
         void setBuffers();
         void render();

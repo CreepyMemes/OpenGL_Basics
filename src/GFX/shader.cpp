@@ -3,7 +3,7 @@
 // --------------------------------------- PUBLIC METHODS ------------------------------------------------
 
 // Constructor reads and builds the shader
-Shader::Shader(std::string vertexFileName, std::string fragmentFileName){
+Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName){
 
     // Get the shaders absolute path
     std::string vertexPath   = getShaderPath(vertexFileName);
@@ -32,39 +32,49 @@ void Shader::use(){
 }
 
 // Utility uniform functions
-void Shader::setBool (const std::string &name, bool  value) const{
+void Shader::setBool (const std::string& name, bool  value) const{
     glUniform1i(glGetUniformLocation(handle, name.c_str()), (int)value);
 }
-void Shader::setInt  (const std::string &name, int   value) const{
+void Shader::setInt  (const std::string& name, int   value) const{
     glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }
-void Shader::setFloat(const std::string &name, float value) const{
+void Shader::setFloat(const std::string& name, float value) const{
     glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
-
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
 // Return the absolute path of the shaders, so the App can be run from anywhere
-std::string Shader::getShaderPath(const std::string fileName) {
+std::string Shader::getShaderPath(const std::string& fileName) {
 
     // Load the executable's absolute path to the path buffer
     char bufferPath[255] = ""; getExecutablePath(bufferPath, sizeof(bufferPath));
 
-    // Get the executable's path by converting the buffer to a filesystem::path type
-    std::filesystem::path executablePath(bufferPath);
+    // Get the executable's path by converting the buffer to an std::string type
+    std::string executablePath(bufferPath);
 
-    // Go back one directory level
-    std::filesystem::path parentPath = executablePath.parent_path().parent_path();
-
+    // Go back one directory level (ignoring the current App executable)
+    std::string parentPath = getParentPath(getParentPath(executablePath));
+    
     // Construct the shader's file path
-    std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
+    std::string filePath = parentPath + "\\res\\shaders\\" + fileName;
+    
+    return filePath;
+}
 
-    return filePath.string();
+// Get the parent path of a given string type path
+std::string Shader::getParentPath(const std::string& path) {
+
+    size_t lastSeparator = path.find_last_of('\\');
+
+    if (lastSeparator != std::string::npos) {
+        return path.substr(0, lastSeparator);
+    }
+    return path;
 }
 
 // Function that reads the source files
-std::string Shader::getSource(std::string shaderPath){
+std::string Shader::getSource(const std::string& shaderPath){
 
     // Ensure ifstream objects can throw exceptions
     std::ifstream shaderFile;
@@ -92,7 +102,7 @@ std::string Shader::getSource(std::string shaderPath){
 }
 
 // Function to compile a shader (vertex shader or fragment shader depending on the argument passed)
-GLuint Shader::CompileShader(GLuint type, const char* source){
+GLuint Shader::CompileShader(const GLuint type, const char* source){
     
     // Creates a shader object and returns it's ID
     GLuint shader = glCreateShader(type);

@@ -1,7 +1,7 @@
 #include "renderer.h"
 
 // Initialize VAO VBO EBO and compile Shader from given shader's file names
-Renderer::Renderer(std::string vertexFileName, std::string fragmentFileName) 
+Renderer::Renderer(const std::string& vertexFileName, const std::string& fragmentFileName) 
     : vbo(GL_ARRAY_BUFFER, false), 
       ebo(GL_ELEMENT_ARRAY_BUFFER, false),
       shader(vertexFileName, fragmentFileName) {}
@@ -28,11 +28,10 @@ void Renderer::setBuffers(){
     vao.bind();
 
     vbo.setData(vertices, sizeof(vertices)); 
-    ebo.setData(indices, sizeof(indices));
+    ebo.setData(indices,  sizeof(indices));
 
-    // Set Postion and Color Attributes
-    vao.setAttribute(vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), 0);
-    vao.setAttribute(vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), 3 * sizeof(float));
+    // Set Postion and Color Attributes (note this only works if all attributes are GL_FLOAT and have 3 elements)
+    for(int i = 0; i < 2; i++) vao.setAttribute(vbo, i, 3, GL_FLOAT, 6 * sizeof(float), i * 3 * sizeof(float));
 }
 
 // Draw things with previously configured VAO and it's VBO/EBO data and us the shader
