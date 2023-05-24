@@ -12,8 +12,10 @@
 class Window {
 
     public:
-        Window(const int width, const int height, const char* title);
+        Window();
         ~Window();
+
+        void run();
 
         bool shouldClose();
         void processInput();
@@ -27,8 +29,9 @@ class Window {
         GLFWwindow* window;
         Renderer* renderer;
 
-        const int width, height;
-        const char* title;
+        const int width = 1200;
+        const int height = 720;
+        const char* title = "OpenGL Template";
 
         void initGlfw();
         void setVersion();

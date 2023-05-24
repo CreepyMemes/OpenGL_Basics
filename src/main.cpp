@@ -1,7 +1,7 @@
-#include "GFX/application.h"
+#include "GFX/window.h"
 
 int main(){
-    Application app;
-    app.run();
+    Window window;
+    window.run();
 }
 

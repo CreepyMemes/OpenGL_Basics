@@ -3,13 +3,16 @@
 // --------------------------------------- PUBLIC METHODS ------------------------------------------------
 
 // Constructor initializes a GLFW window with given size as arguments
-Window::Window(const int width, const int height, const char* title) : width(width), height(height), title(title){   
+Window::Window(){   
     initGlfw();
     setVersion();
     createWindow();
     glfwMakeContextCurrent(window);
     initGlad();
     setupCallbacks();
+
+    initRenderer("shader.vs", "shader.fs");
+    setBuffers(); 
 }
 
 // Destructor method, that destroys the GLFW window object
@@ -18,6 +21,14 @@ Window::~Window() {
     glfwTerminate();
 
     delete renderer; // Clean up the dynamically allocated object
+}
+
+void Window::run(){
+    while(!shouldClose()){    
+        processInput();
+        render();
+        update();
+    }
 }
 
 // Check if the window should close
