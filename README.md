@@ -1,5 +1,4 @@
-# My CMake OpenGL C++ Notes (_cross-platform_)
-
+# My cross-platform OpenGL template code with C++ and Cmake
 
 ### First of all clone this repo (and it's submodules automatically) with this command:
 ```
