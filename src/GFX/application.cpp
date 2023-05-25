@@ -22,6 +22,7 @@ Application::Application() : renderer("shader.vs", "shader.fs"){
     renderer.set_vbo(vertices, sizeof(vertices));
     renderer.set_ebo(indices,  sizeof(indices));
 
+    // Set Postion and Color Attributes (note this only works if all attributes are GL_FLOAT and have 3 elements)
     for(int i = 0; i < 2; i++) renderer.set_attribute(i, 3, GL_FLOAT, 6 * sizeof(float), i * 3 * sizeof(float));
 }
 
