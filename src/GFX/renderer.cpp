@@ -1,62 +1,34 @@
 #include "renderer.h"
 
-
-// --------------------------------------- PUBLIC METHODS ------------------------------------------------
-
 // Initialize VAO VBO EBO and compile Shader from given shader's file names
 Renderer::Renderer(const std::string& vertexFileName, const std::string& fragmentFileName) 
     : vbo(GL_ARRAY_BUFFER, false), 
       ebo(GL_ELEMENT_ARRAY_BUFFER, false),
       shader(vertexFileName, fragmentFileName) {}
 
-// Load the VBO data and configuration
-void Renderer::setBuffers(){
-
-    // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
-    float vertices[] = {
-        
-        // Positions        // Colors
-         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f   
-    };
-    
-    // Create an array that contains the indices of the vertices that will be loaded into the EBO (face buffer)
-    unsigned int indices[] = {
-        0, 1, 3,
-        1, 2, 3 
-    };      
-
+// Load vertices data to the VBO
+void Renderer::set_vbo(const void* data, size_t size){
     vao.bind();
-
-    vbo.setData(vertices, sizeof(vertices)); 
-    ebo.setData(indices,  sizeof(indices));
-
-    // Set Postion and Color Attributes (note this only works if all attributes are GL_FLOAT and have 3 elements)
-    for(int i = 0; i < 2; i++) vao.setAttribute(vbo, i, 3, GL_FLOAT, 6 * sizeof(float), i * 3 * sizeof(float));
+    vbo.setData(data, size); 
 }
 
-// Draw things with previously configured VAO and it's VBO/EBO data and us the shader
-void Renderer::render() {
+// Load indices data to the EBO
+void Renderer::set_ebo(const void* data, size_t size){
     vao.bind();
+    ebo.setData(data, size);   
+}
+
+// Set attribute configuration to the VBO
+void Renderer::set_attribute(GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset){
+    vao.bind();
+    vao.set_attribute(vbo, index, size, type, stride, offset);  
+}
+
+// Load float value to the defined shader's uniform given by it's name
+void Renderer::set_uniform_float(const std::string& name, const float value){
     shader.bind();
-
-    shader.setFloat("xoffset", xoffset);
-    shader.setFloat("yoffset", yoffset);
-
-    xoffset += xcount;
-    yoffset += ycount;
-
-    if(xoffset >= 0.8 | xoffset <= -0.8) xcount *= -1;
-    if(yoffset >= 0.8 | yoffset <= -0.8) ycount *= -1;
-
-    clear();
-    draw();
+    shader.setFloat(name, value);
 }
-
-
-// --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
 // Clear the screen and check for errors
 void Renderer::clear(){
@@ -67,6 +39,8 @@ void Renderer::clear(){
 
 // Draw elements and check if there are errors
 void Renderer::draw(){
+    vao.bind();
+    shader.bind();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glCheckError();
 }

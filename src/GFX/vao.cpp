@@ -16,7 +16,7 @@ void VAO::bind() {
 }
 
 // Set a given VBO as argument it's attribute configuration that will get saved in this VAO
-void VAO::setAttribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset){
+void VAO::set_attribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset){
 
     // Bind the VAO and the target VBO
     bind();

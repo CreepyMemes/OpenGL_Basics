@@ -51,12 +51,12 @@ GLint Shader::getUniformLocation(const std::string& name){
     GLint location = glGetUniformLocation(handle, name.c_str());
 
     if(location == -1){
-        std::cout<<"[Shader Error: uniform '"<<name<<"' not found in shader]\n";
+        std::cerr<<"[Shader Error: uniform '" << name << "' not found in shader]\n";
         abort();
     }
     
     uniform_location_cache[name] = location;
-
+    
     return location;
 }
 
