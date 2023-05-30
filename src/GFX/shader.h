@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gfx.h"
-#include "error_handling.h"
 
 #include <iostream>
 #include <string>
@@ -26,7 +25,7 @@ class Shader{
         Shader(const std::string& vertexFileName, const std::string& fragmentFileName);
         ~Shader();
 
-        void bind();
+        void bind() const;
 
         void setBool (const std::string& name, bool  value);        
         void setInt  (const std::string& name, int   value);
