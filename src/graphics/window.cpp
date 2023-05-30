@@ -23,19 +23,6 @@ bool Window::shouldClose() {
     return glfwWindowShouldClose(window);
 }
 
-// Swap frond and back buffers
-void Window::swapBuffers(){
-    glfwSwapBuffers(window);
-}
-
-// Poll IO events (keys pressed/released, mouse moved etc.)
-void Window::pollEvents(){
-    glfwPollEvents();
-}
-
-
-// --------------------------------------- PRIVATE METHODS ------------------------------------------------
-
 // Process incoming inputs
 void Window::processInput(){
 
@@ -54,6 +41,19 @@ void Window::processInput(){
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 }
+
+// Swap frond and back buffers
+void Window::swapBuffers(){
+    glfwSwapBuffers(window);
+}
+
+// Poll IO events (keys pressed/released, mouse moved etc.)
+void Window::pollEvents(){
+    glfwPollEvents();
+}
+
+
+// --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
 // Attempt to initialize the GLFW library, return -1 if failed
 void Window::init_glfw(){
