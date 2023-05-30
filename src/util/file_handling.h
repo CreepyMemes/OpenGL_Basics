@@ -15,5 +15,5 @@
     #define getExecutablePath(buf, size) readlink("/proc/self/exe", (buf), (size))
 #endif
 
-std::string readFile(const std::string& path);
 std::string getFilePath(const std::string& fileName, const std::string& type);
+std::string readFile(const std::string& path);
