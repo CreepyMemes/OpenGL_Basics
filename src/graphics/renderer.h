@@ -4,7 +4,7 @@
 #include "vao.h"
 #include "buffer.h"
 #include "shader.h"
-#include "error_handling.h"
+#include "../util/error_handling.h"
 
 class Renderer {
 
