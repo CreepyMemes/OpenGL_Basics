@@ -42,6 +42,9 @@ void Shader::setFloat(const std::string& name, float value){
     glUniform1f(getUniformLocation(name), value);
 }
 
+
+// --------------------------------------- PRIVATE METHODS ------------------------------------------------
+
 // Checks if the location of a given uniform is already saved in the unordered map, if not then gets it's location and checks if it's valid then saves it in cache
 GLint Shader::getUniformLocation(const std::string& name){
 
@@ -59,8 +62,6 @@ GLint Shader::getUniformLocation(const std::string& name){
     
     return location;
 }
-
-// --------------------------------------- PRIVATE METHODS ------------------------------------------------
 
 // Function to compile a shader (vertex shader or fragment shader depending on the argument passed)
 GLuint Shader::CompileShader(const GLuint type, const char* source){
