@@ -1,23 +1,13 @@
 #pragma once
 
 #include "opengl.h"
+#include "../util/path_helper.h"
 
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
-
-// Defining OS dependant executable's absolute path retrieval
-#ifdef _WIN32
-    #include <io.h>
-    #define getExecutablePath(buf, size) _fullpath((buf), _pgmptr, (size))
-    #define SLASH '\\'
-#else
-    #include <unistd.h>
-    #define getExecutablePath(buf, size) readlink("/proc/self/exe", (buf), (size))
-    #define SLASH '/'
-#endif
 
 class Shader{
 
@@ -35,8 +25,6 @@ class Shader{
         GLuint handle;
         std::unordered_map<std::string, GLint> uniform_location_cache;
 
-        std::string getShaderPath(const std::string& fileName);
-        std::string getParentPath(const std::string& path);
         std::string getSource(const std::string& shaderPath);
 
         GLint getUniformLocation(const std::string& name);

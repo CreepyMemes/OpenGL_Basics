@@ -7,17 +7,17 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/lib/GLFW/include
 )
 
-# Set the path to main.cpp
-set(MAIN_SRC ${CMAKE_SOURCE_DIR}/src/main.cpp)
-
-# Set the path to the directory containing other .cpp files
+# Set the path to main.cpp and all the other directories containing .cpp files
+set(MAIN_SRC     ${CMAKE_SOURCE_DIR}/src/main.cpp)
 set(GRAPHICS_DIR ${CMAKE_SOURCE_DIR}/src/graphics)
+set(UTIL_DIR    ${CMAKE_SOURCE_DIR}/src/util)
 
-# Get a list of .cpp files in the GFX directory
+# Get a list of all the .cpp files in the previously set directories
 file(GLOB GRAPHICS_SOURCES "${GRAPHICS_DIR}/*.cpp")
+file(GLOB UTIL_SOURCES    "${UTIL_DIR}/*.cpp")
 
 # Add the executable and include the main.cpp and other .cpp files
-add_executable(${PROJECT_NAME} ${MAIN_SRC} ${GRAPHICS_SOURCES})
+add_executable(${PROJECT_NAME} ${MAIN_SRC} ${GRAPHICS_SOURCES} ${UTIL_SOURCES})
 
 # Set OFF these GLFW Option Variables before adding the GLFW subdirectory so it doesn't build useless shit
 option(GLFW_BUILD_EXAMPLES OFF)

@@ -6,8 +6,8 @@
 Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName){
 
     // Get the shaders absolute path
-    std::string vertexPath   = getShaderPath(vertexFileName);
-    std::string fragmentPath = getShaderPath(fragmentFileName);
+    std::string vertexPath   = getFilePath(vertexFileName);
+    std::string fragmentPath = getFilePath(fragmentFileName);
 
     // Read the source files from their absolute paths
     std::string vertexSource   = getSource(vertexPath);
@@ -61,35 +61,6 @@ GLint Shader::getUniformLocation(const std::string& name){
 }
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
-
-// Return the absolute path of the shaders, so the App can be run from anywhere
-std::string Shader::getShaderPath(const std::string& fileName) {
-
-    // Load the executable's absolute path to the path buffer
-    char bufferPath[255] = ""; getExecutablePath(bufferPath, sizeof(bufferPath));
-
-    // Get the executable's path by converting the buffer to an std::string type
-    std::string executablePath(bufferPath);
-
-    // Go back one directory level (ignoring the current App executable)
-    std::string parentPath = getParentPath(getParentPath(executablePath));
-
-    // Construct the shader's file path
-    std::string filePath = parentPath + SLASH + "res" + SLASH + "shaders" + SLASH + fileName;
-
-    return filePath;
-}
-
-// Get the parent path of a given string type path
-std::string Shader::getParentPath(const std::string& path) {
-
-    size_t lastSeparator = path.find_last_of(SLASH);
-
-    if (lastSeparator != std::string::npos) {
-        return path.substr(0, lastSeparator);
-    }
-    return path;
-}
 
 // Function that reads the source files
 std::string Shader::getSource(const std::string& shaderPath){
