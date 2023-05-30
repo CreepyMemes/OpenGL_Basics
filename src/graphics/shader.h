@@ -2,11 +2,9 @@
 
 #include "opengl.h"
 #include "../util/path_helper.h"
+#include "../util/file_handling.h"
 
 #include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
 #include <unordered_map>
 
 class Shader{
@@ -24,8 +22,6 @@ class Shader{
     private:
         GLuint handle;
         std::unordered_map<std::string, GLint> uniform_location_cache;
-
-        std::string getSource(const std::string& shaderPath);
 
         GLint getUniformLocation(const std::string& name);
 

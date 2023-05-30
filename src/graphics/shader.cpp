@@ -10,8 +10,8 @@ Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFil
     std::string fragmentPath = getFilePath(fragmentFileName);
 
     // Read the source files from their absolute paths
-    std::string vertexSource   = getSource(vertexPath);
-    std::string fragmentSource = getSource(fragmentPath);
+    std::string vertexSource   = readFile(vertexPath);
+    std::string fragmentSource = readFile(fragmentPath);
 
     // Compile the Vertex Shader and Fragment Shader from their sources
     GLuint vertex   = CompileShader(GL_VERTEX_SHADER,   vertexSource.c_str());
@@ -61,34 +61,6 @@ GLint Shader::getUniformLocation(const std::string& name){
 }
 
 // --------------------------------------- PRIVATE METHODS ------------------------------------------------
-
-// Function that reads the source files
-std::string Shader::getSource(const std::string& shaderPath){
-
-    // Ensure ifstream objects can throw exceptions
-    std::ifstream shaderFile;
-    shaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-
-    // Variable that will hold the stream
-    std::stringstream shaderStream;
-    try{
-        // Open file with it's path converted to C style string
-        shaderFile.open(shaderPath.c_str());
-           
-        // Read the file's buffer contents into stream
-        shaderStream << shaderFile.rdbuf();
-
-        // Close the file handler
-        shaderFile.close();
-    }
-    catch(std::ifstream::failure e){
-        std::cerr << "[Shader Error: Failed to read a shader file]" << std::endl;
-        abort();
-    }
-
-    // Convert stream into string
-    return shaderStream.str();
-}
 
 // Function to compile a shader (vertex shader or fragment shader depending on the argument passed)
 GLuint Shader::CompileShader(const GLuint type, const char* source){
