@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gfx.h"
+#include "opengl.h"
 #include "vao.h"
 #include "buffer.h"
 #include "shader.h"

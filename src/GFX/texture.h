@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gfx.h"
+#include "opengl.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../lib/STB/stb_image.h"
