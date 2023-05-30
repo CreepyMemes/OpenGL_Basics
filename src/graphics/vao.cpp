@@ -11,7 +11,7 @@ VAO::~VAO() {
 }
 
 // bind the VAO first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-void VAO::bind() {
+void VAO::bind() const{
     glBindVertexArray(handle);
 }
 

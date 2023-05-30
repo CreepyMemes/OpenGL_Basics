@@ -8,7 +8,7 @@ class Buffer{
         Buffer(GLint type, bool dynamic);
         ~Buffer();
 
-        void bind();
+        void bind() const;
         void setData(const void* data, size_t size);
 
     private:

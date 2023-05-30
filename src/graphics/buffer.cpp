@@ -11,7 +11,7 @@ Buffer::~Buffer() {
 }
 
 // Bind the Buffer
-void Buffer::bind() {
+void Buffer::bind() const{
     glBindBuffer(type, handle);
 }
 

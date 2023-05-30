@@ -9,7 +9,7 @@ class VAO{
         VAO();
         ~VAO();
 
-        void bind();
+        void bind() const;
         void set_attribute(Buffer &vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
 
     private:    
