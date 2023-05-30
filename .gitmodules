@@ -3,5 +3,5 @@
 	url = https://github.com/glfw/glfw.git
 
 [submodule "lib/STB"]
-	path = lib/STB
-	url = https://github.com/nothings/stb/blob/master/stb_image.h
+    path = lib/STB
+    url = https://github.com/nothings/stb.git
