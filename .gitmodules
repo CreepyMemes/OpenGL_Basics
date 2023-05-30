@@ -1,7 +1,3 @@
 [submodule "lib/GLFW"]
 	path = lib/GLFW
 	url = https://github.com/glfw/glfw.git
-
-[submodule "lib/STB"]
-	path = lib/STB
-    url = https://github.com/nothings/stb.git
