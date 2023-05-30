@@ -1,4 +1,4 @@
-#include "GFX/application.h"
+#include "graphics/application.h"
 
 int main(){
     Application app;
