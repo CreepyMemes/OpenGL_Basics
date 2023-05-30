@@ -16,4 +16,4 @@
 #endif
 
 std::string readFile(const std::string& path);
-std::string getFilePath(const std::string& fileName);
+std::string getFilePath(const std::string& fileName, const std::string& type);

@@ -6,8 +6,8 @@
 Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName){
 
     // Get the shaders absolute path
-    std::string vertexPath   = getFilePath(vertexFileName);
-    std::string fragmentPath = getFilePath(fragmentFileName);
+    std::string vertexPath   = getFilePath(vertexFileName, "shaders");
+    std::string fragmentPath = getFilePath(fragmentFileName, "shaders");
 
     // Read the source files from their absolute paths
     std::string vertexSource   = readFile(vertexPath);

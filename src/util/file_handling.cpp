@@ -28,8 +28,8 @@ std::string readFile(const std::string& path){
     return stream.str();
 }
 
-// Return the absolute path of the shaders, so the App can be run from anywhere
-std::string getFilePath(const std::string& fileName) {
+// Returns the absolute path of a file inside res folder ( type = "shaders"/"textures"), so the executable App can be run from anywhere
+std::string getFilePath(const std::string& fileName, const std::string& type) {
 
     // Load the executable's absolute path to the path buffer
     char bufferPath[255] = ""; getExecutablePath(bufferPath, sizeof(bufferPath));
@@ -41,7 +41,7 @@ std::string getFilePath(const std::string& fileName) {
     std::filesystem::path parentPath = executablePath.parent_path().parent_path();
 
     // Construct the shader's file path
-    std::filesystem::path filePath = parentPath / "res" / "shaders" / fileName;
+    std::filesystem::path filePath = parentPath / "res" / type / fileName;
 
     return filePath.string();
 }
