@@ -1,7 +1,6 @@
 #pragma once
 
 #include "opengl.h"
-#include "../util/path_helper.h"
 #include "../util/file_handling.h"
 
 #include <iostream>
