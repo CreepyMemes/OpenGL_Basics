@@ -5,6 +5,7 @@ project(App)
 include_directories(
     ${CMAKE_SOURCE_DIR}/lib/GLAD/include
     ${CMAKE_SOURCE_DIR}/lib/GLFW/include
+    ${CMAKE_SOURCE_DIR}/lib
 )
 
 # Set the path to main.cpp and all the other directories containing .cpp files
