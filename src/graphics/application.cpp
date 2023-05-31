@@ -7,10 +7,10 @@ Application::Application() : renderer("shader.vs", "shader.fs"), texture("dvd.pn
     float vertices[] = {
         
         // Positions        // Colors         // Texture Uv
-         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f 
+         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f 
     };
     
     // Create an array that contains the indices of the vertices that will be loaded into the EBO (face buffer)
@@ -23,7 +23,10 @@ Application::Application() : renderer("shader.vs", "shader.fs"), texture("dvd.pn
     renderer.set_ebo(indices,  sizeof(indices));
 
     // Set Postion, Color and Texture Uv Attributes (note this for loop only works if all attributes are GL_FLOAT and have 3 elements)
-    for(int i = 0; i < 3; i++) renderer.set_attribute(i, 3, GL_FLOAT, 9 * sizeof(float), i * 3 * sizeof(float));
+    renderer.set_attribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
+    renderer.set_attribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3 * sizeof(float));
+    renderer.set_attribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6 * sizeof(float));
+
 }
 
 // Loop until the user closes the application

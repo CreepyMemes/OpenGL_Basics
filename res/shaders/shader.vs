@@ -2,9 +2,9 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec3 aTexture;
 
-out vec3 v_aTexture;
+layout (location = 2) in vec2 aTexture;
+out vec2 v_aTexture;
 
 out vec3 ourColor;
 
