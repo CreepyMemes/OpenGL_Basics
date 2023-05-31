@@ -1,4 +1,4 @@
-# My cross-platform OpenGL template code with C++ and Cmake
+# How to use:
 
 ### First of all clone this repo (and it's submodules automatically) with this command:
 ```
