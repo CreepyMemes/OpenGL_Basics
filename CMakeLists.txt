@@ -14,7 +14,7 @@ set(UTIL_DIR     ${CMAKE_SOURCE_DIR}/src/util)
 
 # Get a list of all the .cpp files in the previously set directories
 file(GLOB GRAPHICS_SOURCES "${GRAPHICS_DIR}/*.cpp")
-file(GLOB UTIL_SOURCES    "${UTIL_DIR}/*.cpp")
+file(GLOB UTIL_SOURCES     "${UTIL_DIR}/*.cpp")
 
 # Add the executable and include the main.cpp and other .cpp files
 add_executable(${PROJECT_NAME} ${MAIN_SRC} ${GRAPHICS_SOURCES} ${UTIL_SOURCES})
