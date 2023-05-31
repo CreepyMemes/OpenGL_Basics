@@ -30,6 +30,12 @@ void Renderer::set_uniform_float(const std::string& name, const float value){
     shader.setFloat(name, value);
 }
 
+// Load float value to the defined shader's uniform given by it's name
+void Renderer::set_uniform_int(const std::string& name, const int value){
+    shader.bind();
+    shader.setInt(name, value);
+}
+
 // Clear the screen and check for errors
 void Renderer::clear(){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

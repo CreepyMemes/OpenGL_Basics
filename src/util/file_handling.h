@@ -17,3 +17,6 @@
 
 std::string getFilePath(const std::string& fileName, const std::string& type);
 std::string readFile(const std::string& path);
+
+unsigned char* readImage(const std::string& path, int& width, int& height, int& channels);
+void freeImage(unsigned char* image);

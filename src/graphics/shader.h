@@ -4,6 +4,7 @@
 #include "../util/file_handling.h"
 
 #include <iostream>
+#include <string>
 #include <unordered_map>
 
 class Shader{

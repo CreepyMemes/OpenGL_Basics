@@ -1,16 +1,16 @@
 #include "application.h"
 
 // Application Object Constructor with predefined window size, title and predefined shaders (for now)
-Application::Application() : renderer("shader.vs", "shader.fs"){
+Application::Application() : renderer("shader.vs", "shader.fs"), texture("dvd.png"){
     
     // Create an array that contains all the unique vertices that will be loaded into the VBO (vertex buffer)
     float vertices[] = {
         
-        // Positions        // Colors
-         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f   
+        // Positions        // Colors         // Texture Uv
+         0.2f,  0.2f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.2f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.2f, -0.2f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -0.2f,  0.2f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f 
     };
     
     // Create an array that contains the indices of the vertices that will be loaded into the EBO (face buffer)
@@ -22,8 +22,8 @@ Application::Application() : renderer("shader.vs", "shader.fs"){
     renderer.set_vbo(vertices, sizeof(vertices));
     renderer.set_ebo(indices,  sizeof(indices));
 
-    // Set Postion and Color Attributes (note this only works if all attributes are GL_FLOAT and have 3 elements)
-    for(int i = 0; i < 2; i++) renderer.set_attribute(i, 3, GL_FLOAT, 6 * sizeof(float), i * 3 * sizeof(float));
+    // Set Postion, Color and Texture Uv Attributes (note this for loop only works if all attributes are GL_FLOAT and have 3 elements)
+    for(int i = 0; i < 3; i++) renderer.set_attribute(i, 3, GL_FLOAT, 9 * sizeof(float), i * 3 * sizeof(float));
 }
 
 // Loop until the user closes the application
@@ -41,11 +41,15 @@ void Application::run(){
         renderer.set_uniform_float("xoffset", xoffset);
         renderer.set_uniform_float("yoffset", yoffset);
 
+        texture.bind();
+        renderer.set_uniform_int("u_Texture", 0);
+
         xoffset += xcount;
         yoffset += ycount;
 
         if(xoffset >= 0.8 | xoffset <= -0.8) xcount *= -1;
         if(yoffset >= 0.8 | yoffset <= -0.8) ycount *= -1;
+
 
         renderer.clear();
         renderer.draw();

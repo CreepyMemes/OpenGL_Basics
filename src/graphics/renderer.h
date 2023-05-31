@@ -16,6 +16,7 @@ class Renderer {
         void set_attribute(GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
 
         void set_uniform_float(const std::string& name, const float value);
+        void set_uniform_int  (const std::string& name, const int   value);
         
         void clear();
         void draw();

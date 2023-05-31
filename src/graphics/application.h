@@ -2,6 +2,7 @@
 
 #include "window.h"
 #include "renderer.h"
+#include "texture.h"
 
 class Application{   
 
@@ -13,4 +14,5 @@ class Application{
     private:
         Window window;
         Renderer renderer;
+        Texture texture;
 };
