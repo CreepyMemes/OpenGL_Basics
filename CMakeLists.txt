@@ -10,7 +10,7 @@ include_directories(
 # Set the path to main.cpp and all the other directories containing .cpp files
 set(MAIN_SRC     ${CMAKE_SOURCE_DIR}/src/main.cpp)
 set(GRAPHICS_DIR ${CMAKE_SOURCE_DIR}/src/graphics)
-set(UTIL_DIR    ${CMAKE_SOURCE_DIR}/src/util)
+set(UTIL_DIR     ${CMAKE_SOURCE_DIR}/src/util)
 
 # Get a list of all the .cpp files in the previously set directories
 file(GLOB GRAPHICS_SOURCES "${GRAPHICS_DIR}/*.cpp")
