@@ -2,9 +2,6 @@
 
 #include "opengl.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <STB/stb_image.h>
-
 #include <iostream>
 #include <string>
 #include <fstream>
